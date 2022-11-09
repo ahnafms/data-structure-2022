@@ -3,13 +3,12 @@
 using namespace std;
 
 class MyClass{        
-        public:
-        string MHSname;
-		
-		public:
-        void printname(){
-            cout <<  MHSname;
-        }
+    public:
+    string MHSname;
+
+    void printname(){
+        cout <<  MHSname;
+    }
 };
     
 int main(){
