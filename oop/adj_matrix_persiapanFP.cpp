@@ -1,16 +1,20 @@
+
 #include <iostream>
 #include <list>
 #include <queue>
 #include <string.h>
 #include <string>
+#include <vector>
 using namespace std;
 
 class Graph{
 	int V;
-	bool** adjMatrix;
-	bool visited_dfs[21][21];
-	int adjM[21][21];
-	string place[21][21];
+	bool visited_dfs[21] = {false};
+	int adjM[21][21] ={
+          {0, 0},
+          {0, 0}
+    };
+	string place[21];
 	
 public:
 Graph(int v){
@@ -18,28 +22,26 @@ Graph(int v){
 }
 
 void addVertex(string str, int v1, int v2){
-	adjM[v1][v2] = v2;
-	place[v1][v2] = str;
-	cout << place[1][5];
+	adjM[v1][v2] = 1;
+	place[v2] = str;
 }
 
 void bfs(string startVertex, string destination){
-	bool visited[21][21] = {false};
+	bool visited[21] = {false};
 	queue<int> q;
 	q.push(1);
-	visited[1][1] = true;
+	visited[1] = true;
 	while(!q.empty()){
 		int flag = 0;
 		for(int i = 1; i<= 20; i++){
-			if(!visited[q.front()][i]){
-				visited[q.front()][i] = true;
+			if(!visited[i]){
+				visited[i] = true;
 				q.push(i);
 			}
 		}
-
 		const char *d = destination.c_str();
-		const char *c = place[q.front()][q.front()].c_str();
-		cout << place[q.front()][q.front()] << " ";
+		const char *c = place[q.front()].c_str();
+		cout << place[q.front()] << " ";
 		q.pop();
 		if(strcmp(d, c)==0) break;
 	}
@@ -48,18 +50,19 @@ void bfs(string startVertex, string destination){
 int flag = 0;
 
 void dfs(int source, string destination){
-	visited_dfs[source][source] = true;
+	visited_dfs[source] = true;
 	const char *d = destination.c_str();
-	const char *c = place[source][source].c_str();
+	const char *c = place[source].c_str();
 	cout << c << " ";
 	if(strcmp(c, d) == 0) {
 		flag = 1;
 		return;
 	}
-	for(int i = source; i<= 20; i++){
-		if(!visited_dfs[source][i]) return dfs(i, destination);
+	for(int i = 1;i<=V;i++){
+	    if(flag == 1) return;
+		else if ((!visited_dfs[i]) && adjM[source][i] == 1) dfs(i, destination);
 	}
-}
+}   
 };
 int main(){
 	Graph graph(20);
@@ -121,5 +124,5 @@ int main(){
 	cout << "BFS" << endl;
  	graph.bfs("rumah", "km_50");
  	cout << "\nDFS" << endl;
- 	graph.dfs(1, "pantai");
+ 	graph.dfs(1, "km_50");
 }
