@@ -37,6 +37,27 @@ void bfs(string startVertex, string destination){
 		if(strcmp(c, d) == 0) break;
 	}
 }
+
+int flag = 0;
+void dfs(int source, string destination){
+	vector<bool> visited;
+	visited.resize(V,false);
+	visited[source] = true;
+	const char *c = adj[source].front().second.c_str();
+	const char *d = destination.c_str();
+	cout << c << " ";
+	if(strcmp(c, d) == 0) {
+		flag = 1;
+		return;
+	}
+	else {
+		for(auto const &i: adj[source]){	
+			if(flag == 1) return;
+			else if(!visited[i.first]) dfs(i.first, destination);
+		}
+	}
+}
+
 };
 int main(){
 	Graph graph(20);
@@ -95,5 +116,8 @@ int main(){
 	graph.addVertex("pantai", 19, 19);
 	graph.addVertex("km_50", 19, 20);
 	graph.addVertex("km_50", 20, 20);
-	graph.bfs("rumah", "km_50");
+	cout << "bfs" << endl;
+	graph.bfs("rumah", "stadion");
+	cout << "\ndfs" << endl;
+	graph.dfs(1, "km_50");
 }

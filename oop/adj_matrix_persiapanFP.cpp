@@ -8,6 +8,7 @@ using namespace std;
 class Graph{
 	int V;
 	bool** adjMatrix;
+	bool visited_dfs[21][21];
 	int adjM[21][21];
 	string place[21][21];
 	
@@ -28,7 +29,6 @@ void bfs(string startVertex, string destination){
 	q.push(1);
 	visited[1][1] = true;
 	while(!q.empty()){
-		
 		int flag = 0;
 		for(int i = 1; i<= 20; i++){
 			if(!visited[q.front()][i]){
@@ -42,6 +42,22 @@ void bfs(string startVertex, string destination){
 		cout << place[q.front()][q.front()] << " ";
 		q.pop();
 		if(strcmp(d, c)==0) break;
+	}
+}
+
+int flag = 0;
+
+void dfs(int source, string destination){
+	visited_dfs[source][source] = true;
+	const char *d = destination.c_str();
+	const char *c = place[source][source].c_str();
+	cout << c << " ";
+	if(strcmp(c, d) == 0) {
+		flag = 1;
+		return;
+	}
+	for(int i = source; i<= 20; i++){
+		if(!visited_dfs[source][i]) return dfs(i, destination);
 	}
 }
 };
@@ -102,5 +118,8 @@ int main(){
 	graph.addVertex("pantai", 19, 19);
 	graph.addVertex("km_50", 19, 20);
 	graph.addVertex("km_50", 20, 20);
+	cout << "BFS" << endl;
  	graph.bfs("rumah", "km_50");
+ 	cout << "\nDFS" << endl;
+ 	graph.dfs(1, "pantai");
 }
