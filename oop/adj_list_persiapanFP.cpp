@@ -7,16 +7,34 @@ using namespace std;
 class Graph{
 	int V;
 	list<pair<int, string>> adj[100];
+	vector<bool> visited_dfs;
 public:
 Graph(int v){
 	V = v;
+	visited_dfs.resize(V,false);
 }
 
 void addVertex(string str, int v1, int v2){
 	adj[v1].push_back(make_pair(v2, str));
 }
 
-
+void bfs_no_destination(string startVertex){
+	vector<bool> visited;
+	visited.resize(V,false);
+	queue<pair<int, string>> q;
+	q.push(make_pair(1, startVertex));
+	visited[1] = true;
+	while(!q.empty()){
+		for(auto const &i: adj[q.front().first]){
+			if(!visited[i.first]){
+				visited[i.first] = true;
+				q.push(make_pair(i.first, i.second));
+			}
+		}
+		cout << q.front().second << " ";
+		q.pop();
+	}
+}
 void bfs(string startVertex, string destination){
 	vector<bool> visited;
 	visited.resize(V,false);
@@ -55,6 +73,15 @@ void dfs(int source, string destination){
 			if(flag == 1) return;
 			else if(!visited[i.first]) dfs(i.first, destination);
 		}
+	}
+}
+
+void dfs_no_destination(int source){
+	visited_dfs[source] = true;
+	const char *c = adj[source].front().second.c_str();
+	cout << c << " ";
+	for(auto const &i: adj[source]){	
+		if(!visited_dfs[i.first]) dfs_no_destination(i.first);
 	}
 }
 
@@ -116,8 +143,12 @@ int main(){
 	graph.addVertex("pantai", 19, 19);
 	graph.addVertex("km_50", 19, 20);
 	graph.addVertex("km_50", 20, 20);
-	cout << "bfs" << endl;
+	cout << "bfs no destination" << endl;
+	graph.bfs_no_destination("rumah");
+	cout << "\n\nbfs" << endl;
 	graph.bfs("rumah", "stadion");
-	cout << "\ndfs" << endl;
+	cout << "\n\ndfs no destination" << endl;
+	graph.dfs_no_destination(1);
+	cout << "\n\ndfs" << endl;
 	graph.dfs(1, "km_50");
 }

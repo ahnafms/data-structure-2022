@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <list>
 #include <queue>
@@ -10,6 +9,7 @@ using namespace std;
 class Graph{
 	int V;
 	bool visited_dfs[21] = {false};
+	bool visited_dfs_no_dest[21] = {false};
 	int adjM[21][21] ={
           {0, 0},
           {0, 0}
@@ -47,6 +47,24 @@ void bfs(string startVertex, string destination){
 	}
 }
 
+void bfs_no_destination(string startVertex){
+	bool visited[21] = {false};
+	queue<int> q;
+	q.push(1);
+	visited[1] = true;
+	while(!q.empty()){
+		int flag = 0;
+		for(int i = 1; i<= 20; i++){
+			if(!visited[i]){
+				visited[i] = true;
+				q.push(i);
+			}
+		}
+		cout << place[q.front()] << " ";
+		q.pop();
+	}
+}
+
 int flag = 0;
 
 void dfs(int source, string destination){
@@ -62,7 +80,15 @@ void dfs(int source, string destination){
 	    if(flag == 1) return;
 		else if ((!visited_dfs[i]) && adjM[source][i] == 1) dfs(i, destination);
 	}
-}   
+}
+void dfs_no_destination(int source){
+	visited_dfs_no_dest[source] = true;
+	const char *c = place[source].c_str();
+	cout << c << " ";
+	for(int i = 1;i<=V;i++){
+		if ((!visited_dfs_no_dest[i]) && adjM[source][i] == 1) dfs_no_destination(i);
+	}
+}
 };
 int main(){
 	Graph graph(20);
@@ -121,8 +147,12 @@ int main(){
 	graph.addVertex("pantai", 19, 19);
 	graph.addVertex("km_50", 19, 20);
 	graph.addVertex("km_50", 20, 20);
-	cout << "BFS" << endl;
+	cout << "BFS no destination" << endl;
+ 	graph.bfs_no_destination("rumah");
+	cout << "\n\nBFS" << endl;
  	graph.bfs("rumah", "km_50");
- 	cout << "\nDFS" << endl;
+ 	cout << "\n\nDFS no destination" << endl;
+ 	graph.dfs_no_destination(1);
+ 	cout << "\n\nDFS" << endl;
  	graph.dfs(1, "km_50");
 }
