@@ -8,15 +8,19 @@ class Graph{
 	int V;
 	list<pair<int, string>> adj[100];
 	vector<bool> visited_dfs;
+	vector<bool> visited;
 public:
 Graph(int v){
 	V = v;
 	visited_dfs.resize(V,false);
+	visited.resize(V,false);
 }
 
 void addVertex(string str, int v1, int v2){
 	adj[v1].push_back(make_pair(v2, str));
+	
 }
+
 
 void bfs_no_destination(string startVertex){
 	vector<bool> visited;
@@ -58,8 +62,7 @@ void bfs(string startVertex, string destination){
 
 int flag = 0;
 void dfs(int source, string destination){
-	vector<bool> visited;
-	visited.resize(V,false);
+	
 	visited[source] = true;
 	const char *c = adj[source].front().second.c_str();
 	const char *d = destination.c_str();
@@ -143,6 +146,7 @@ int main(){
 	graph.addVertex("pantai", 19, 19);
 	graph.addVertex("km_50", 19, 20);
 	graph.addVertex("km_50", 20, 20);
+	
 	cout << "bfs no destination" << endl;
 	graph.bfs_no_destination("rumah");
 	cout << "\n\nbfs" << endl;
